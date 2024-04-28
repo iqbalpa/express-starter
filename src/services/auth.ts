@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { User } from "../models/user";
+import { UserRequest } from "../dto/user";
 
 const prisma = new PrismaClient();
 
@@ -11,13 +11,13 @@ export const getUser = async (email: string) => {
 	});
 };
 
-export const createUser = async (user: User) => {
+export const createUser = async (user: UserRequest) => {
     return prisma.user.create({
         data: user,
     });
 };
 
-export const updateUser = async (id: number, user: User) => {
+export const updateUser = async (id: number, user: UserRequest) => {
     return prisma.user.update({
         where: {
             id,
