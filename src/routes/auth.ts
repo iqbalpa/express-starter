@@ -1,16 +1,17 @@
 import { Router, Request, Response } from "express";
 import { User } from "../models/user";
 import { UserRequest, UserResponse } from "../dto/user";
-
+import { hashPassword } from "../utils/auth";
 import { createUser, getUser, updateUser, deleteUser } from "../services/auth";
 
 const authRouter = Router();
 
 authRouter.post("/register", async (req: Request, res: Response) => {
+	const hashedPassword: string = await hashPassword(req.body.password);
 	const userData: UserRequest = {
 		email: req.body.email,
 		name: req.body.name,
-		password: req.body.password,
+		password: hashedPassword,
 		role: req.body.role,
 	};
 	const newUser: User = await createUser(userData);
