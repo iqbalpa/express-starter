@@ -39,7 +39,15 @@ authRouter.post("/login", async (req: Request, res: Response) => {
 			res.status(401).send("Invalid password");
 		} else {
 			const token: string = createToken(user);
-			res.json({ user, token }).status(200);
+			const userResponse: UserResponse = {
+				id: user.id,
+				email: user.email,
+				name: user.name,
+				role: user.role,
+				createdAt: user.createdAt,
+				updatedAt: user.updatedAt,
+			};
+			res.json({ userResponse, token }).status(200);
 		}
 	}
 });
