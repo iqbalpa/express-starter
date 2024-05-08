@@ -5,6 +5,6 @@ export function requestLogger(req: Request, res: Response, next: NextFunction): 
 	console.log(`${req.method} request made to ${req.path}`);
 	console.log(`Headers:\n ${JSON.stringify(req.headers)}`);
 	console.log(`Body:\n ${JSON.stringify(req.body)}`);
-	console.log("==========================");
+	console.log("==========================\n");
 	next();
 }
