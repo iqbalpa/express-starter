@@ -18,3 +18,18 @@ export function userAuth(req: Request, res: Response, next: NextFunction) {
 	// if the authorization token is invalid or missing returning a 401 error
 	res.status(401).send("Unauthorized");
 }
+
+export function adminAuth(req: Request, res: Response, next: NextFunction) {
+	const authenticationToken = req.headers["authorization"];
+
+	if (authenticationToken !== undefined) {
+		const decodedToken = verifyToken(authenticationToken);
+		
+		if (decodedToken.role === "admin") {
+			return next();
+		}
+	}
+
+	// if the authorization token is invalid or missing returning a 401 error
+	res.status(401).send("Unauthorized");
+}
