@@ -4,6 +4,7 @@ import { UserRequest, UserResponse } from "../dto/user";
 import { hashPassword, verifyPassword } from "../utils/auth";
 import { createToken } from "../utils/jwt";
 import { createUser, getUser, updateUser, deleteUser } from "../services/auth";
+import { userAuth } from "../middleware/auth";
 
 const authRouter = Router();
 
@@ -52,7 +53,7 @@ authRouter.post("/login", async (req: Request, res: Response) => {
 	}
 });
 
-authRouter.get("/user-detail", async (req: Request, res: Response) => {
+authRouter.get("/user-detail", userAuth, async (req: Request, res: Response) => {
 	const email: string = req.body.email;
 	const user: User | null = await getUser(email);
 	if (!user) {
@@ -70,7 +71,7 @@ authRouter.get("/user-detail", async (req: Request, res: Response) => {
 	}
 });
 
-authRouter.put("/update/:id", async (req: Request, res: Response) => {
+authRouter.put("/update/:id", userAuth, async (req: Request, res: Response) => {
 	const id: number = parseInt(req.params.id);
 	const userData: UserRequest = {
 		email: req.body.email,
@@ -90,7 +91,7 @@ authRouter.put("/update/:id", async (req: Request, res: Response) => {
 	res.json(userResponse).status(200);
 });
 
-authRouter.delete("/delete/:id", async (req: Request, res: Response) => {
+authRouter.delete("/delete/:id", userAuth, async (req: Request, res: Response) => {
 	const id: number = parseInt(req.params.id);
 	const deletedUser: User = await deleteUser(id);
 	const userResponse: UserResponse = {
